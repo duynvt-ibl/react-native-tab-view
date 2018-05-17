@@ -1,17 +1,105 @@
 {
-  "name": "react-native-tab-view",
-  "version": "0.0.78",
-  "description": "Tab view component for React Native",
-  "main": "src/index.js",
-  "files": [
-    "src/",
-    "types.js"
+  "_args": [
+    [
+      {
+        "raw": "react-native-tab-view@0.0.70",
+        "scope": null,
+        "escapedName": "react-native-tab-view",
+        "name": "react-native-tab-view",
+        "rawSpec": "0.0.70",
+        "spec": "0.0.70",
+        "type": "version"
+      },
+      "/Users/duynvt/Desktop/Git/InfinitoWallet"
+    ]
   ],
-  "scripts": {
-    "test": "jest",
-    "flow": "flow",
-    "lint": "eslint .",
-    "precommit": "yarn lint && yarn flow && yarn test"
+  "_from": "react-native-tab-view@0.0.70",
+  "_id": "react-native-tab-view@0.0.70",
+  "_inCache": true,
+  "_location": "/react-native-tab-view",
+  "_nodeVersion": "8.7.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/react-native-tab-view-0.0.70.tgz_1508796982071_0.17836030549369752"
+  },
+  "_npmUser": {
+    "name": "satya164",
+    "email": "satyajit.happy@gmail.com"
+  },
+  "_npmVersion": "5.4.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-tab-view@0.0.70",
+    "scope": null,
+    "escapedName": "react-native-tab-view",
+    "name": "react-native-tab-view",
+    "rawSpec": "0.0.70",
+    "spec": "0.0.70",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-0.0.70.tgz",
+  "_shasum": "1dd2ded32acd0cb6bfef38d26e53675db733b37b",
+  "_shrinkwrap": null,
+  "_spec": "react-native-tab-view@0.0.70",
+  "_where": "/Users/duynvt/Desktop/Git/InfinitoWallet",
+  "author": {
+    "name": "Satyajit Sahoo",
+    "email": "satyajit.happy@gmail.com",
+    "url": "https://github.com/satya164/"
+  },
+  "bugs": {
+    "url": "https://github.com/react-native-community/react-native-tab-view/issues"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.10"
+  },
+  "description": "Tab view component for React Native",
+  "devDependencies": {
+    "@expo/vector-icons": "^6.1.0",
+    "babel-eslint": "^8.0.1",
+    "babel-jest": "^21.2.0",
+    "babel-preset-react-native": "^4.0.0",
+    "enzyme": "3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-to-json": "^3.1.4",
+    "eslint": "^4.9.0",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-react-native": "^3.1.0",
+    "flow-bin": "~0.53.1",
+    "jest": "^21.2.1",
+    "prettier": "^1.7.4",
+    "react": "16.0.0-beta.5",
+    "react-dom": "16.0.0-beta.5",
+    "react-native": "~0.49.3",
+    "react-test-renderer": "16.0.0-beta.5"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-VOTZs2UCamYrTyBtcxpn4Ko9RkWrq6rZGOY7AagHF/gcCUQBMSWADoplsBopSc5vXnHHeCSR458BkceEuSEaQA==",
+    "shasum": "1dd2ded32acd0cb6bfef38d26e53675db733b37b",
+    "tarball": "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-0.0.70.tgz"
+  },
+  "files": [
+    "src/"
+  ],
+  "gitHead": "02ddf934124b7fdc0a9428305a3757c50506156e",
+  "homepage": "https://github.com/react-native-community/react-native-tab-view#readme",
+  "jest": {
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/__setup__/enzyme.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules"
+    ]
   },
   "keywords": [
     "react-native-component",
@@ -24,52 +112,93 @@
     "scrollable",
     "coverflow"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/react-native-community/react-native-tab-view.git"
-  },
-  "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/react-native-community/react-native-tab-view/issues"
-  },
-  "homepage": "https://github.com/react-native-community/react-native-tab-view#readme",
-  "dependencies": {
-    "prop-types": "^15.6.0"
-  },
-  "devDependencies": {
-    "@expo/vector-icons": "^6.2.0",
-    "babel-jest": "^21.2.0",
-    "babel-preset-react-native": "^4.0.0",
-    "enzyme": "3.2.0",
-    "enzyme-adapter-react-16": "^1.1.0",
-    "enzyme-to-json": "^3.2.2",
-    "eslint": "^4.12.1",
-    "eslint-config-satya164": "^1.0.1",
-    "eslint-plugin-react-native-globals": "^0.1.0",
-    "flow-bin": "~0.56.0",
-    "husky": "^0.14.3",
-    "jest": "^21.2.1",
-    "prettier": "^1.8.2",
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
-    "react-native": "~0.50.4",
-    "react-test-renderer": "16.2.0"
-  },
+  "main": "src/index.js",
+  "maintainers": [
+    {
+      "name": "grabbou",
+      "email": "grabbou@gmail.com"
+    },
+    {
+      "name": "brentvatne",
+      "email": "brentvatne@gmail.com"
+    },
+    {
+      "name": "knowbody",
+      "email": "mateuszzatorski@gmail.com"
+    },
+    {
+      "name": "satya164",
+      "email": "satyajit.happy@gmail.com"
+    }
+  ],
+  "name": "react-native-tab-view",
+  "optionalDependencies": {},
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
-  "jest": {
-    "preset": "react-native",
-    "setupFiles": [
-      "<rootDir>/__setup__/enzyme.js"
-    ],
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-native-community/react-native-tab-view.git"
+  },
+  "scripts": {
+    "flow": "flow",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "version": "0.0.70",
+  "react-native": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "zlib": "browserify-zlib",
+    "console": "console-browserify",
+    "constants": "constants-browserify",
+    "crypto": "react-native-crypto",
+    "dns": "dns.js",
+    "net": "react-native-tcp",
+    "domain": "domain-browser",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "os": "react-native-os",
+    "path": "path-browserify",
+    "querystring": "querystring-es3",
+    "fs": "react-native-level-fs",
+    "dgram": "react-native-udp",
+    "timers": "timers-browserify",
+    "tty": "tty-browserify",
+    "vm": "vm-browserify",
+    "tls": false
+  },
+  "browser": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "zlib": "browserify-zlib",
+    "console": "console-browserify",
+    "constants": "constants-browserify",
+    "crypto": "react-native-crypto",
+    "dns": "dns.js",
+    "net": "react-native-tcp",
+    "domain": "domain-browser",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "os": "react-native-os",
+    "path": "path-browserify",
+    "querystring": "querystring-es3",
+    "fs": "react-native-level-fs",
+    "dgram": "react-native-udp",
+    "timers": "timers-browserify",
+    "tty": "tty-browserify",
+    "vm": "vm-browserify",
+    "tls": false
   }
 }

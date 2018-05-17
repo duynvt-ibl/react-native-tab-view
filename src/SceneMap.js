@@ -1,20 +1,14 @@
 /* @flow */
 
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 export default function SceneMap(scenes: { [key: string]: Function }) {
-  class SceneComponent extends React.PureComponent<*> {
+  class SceneComponent extends PureComponent<*> {
     render() {
+      /* eslint-disable react/prop-types */
       return React.createElement(scenes[this.props.route.key], this.props);
     }
   }
 
-  return ({ route, jumpTo, jumpToIndex }: *) => (
-    <SceneComponent
-      key={route.key}
-      route={route}
-      jumpTo={jumpTo}
-      jumpToIndex={jumpToIndex}
-    />
-  );
+  return ({ route }: *) => <SceneComponent key={route.key} route={route} />;
 }

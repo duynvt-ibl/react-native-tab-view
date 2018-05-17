@@ -1,9 +1,10 @@
 /* @flow */
 
 import * as React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { PagerRendererPropType } from './TabViewPropTypes';
-import type { PagerRendererProps } from './TabViewTypeDefinitions';
+import PropTypes from 'prop-types';
+import { Platform, View, ScrollView, StyleSheet } from 'react-native';
+import { SceneRendererPropType } from './TabViewPropTypes';
+import type { SceneRendererProps, Route } from './TabViewTypeDefinitions';
 
 type ScrollEvent = {
   nativeEvent: {
@@ -11,136 +12,107 @@ type ScrollEvent = {
       x: number,
       y: number,
     },
-    contentSize: {
-      height: number,
-      width: number,
-    },
   },
 };
 
-type State = {|
-  initialOffset: {| x: number, y: number |},
-|};
+type State = {
+  initialOffset: { x: number, y: number },
+};
 
-type Props<T> = PagerRendererProps<T>;
+type Props<T> = SceneRendererProps<T> & {
+  animationEnabled?: boolean,
+  swipeEnabled?: boolean,
+  children?: React.Node,
+};
 
-export default class TabViewPagerScroll<T: *> extends React.Component<
+export default class TabViewPagerScroll<T: Route<*>> extends React.Component<
   Props<T>,
   State
 > {
-  static propTypes = PagerRendererPropType;
-
-  static defaultProps = {
-    canJumpToTab: () => true,
+  static propTypes = {
+    ...SceneRendererPropType,
+    animationEnabled: PropTypes.bool,
+    swipeEnabled: PropTypes.bool,
+    children: PropTypes.node,
   };
 
   constructor(props: Props<T>) {
     super(props);
-
-    const { navigationState, layout } = this.props;
-
     this.state = {
       initialOffset: {
-        x: navigationState.index * layout.width,
+        x: this.props.navigationState.index * this.props.layout.width,
         y: 0,
       },
     };
   }
 
+  state: State;
+
   componentDidMount() {
-    this._setInitialPage();
+    this._scrollTo(
+      this.props.navigationState.index * this.props.layout.width,
+      false
+    );
+    this._resetListener = this.props.subscribe('reset', this._scrollTo);
   }
 
   componentDidUpdate(prevProps: Props<T>) {
     const amount = this.props.navigationState.index * this.props.layout.width;
-
     if (
-      prevProps.navigationState.routes !== this.props.navigationState.routes ||
-      prevProps.layout.width !== this.props.layout.width
+      prevProps.navigationState !== this.props.navigationState ||
+      prevProps.layout !== this.props.layout
     ) {
-      this._scrollTo(amount, false);
-    } else if (
-      prevProps.navigationState.index !== this.props.navigationState.index
-    ) {
-      this._scrollTo(amount);
+      if (
+        Platform.OS === 'android' ||
+        prevProps.navigationState !== this.props.navigationState
+      ) {
+        global.requestAnimationFrame(() => this._scrollTo(amount));
+      } else {
+        this._scrollTo(amount, false);
+      }
     }
   }
 
+  componentWillUnmount() {
+    this._resetListener.remove();
+  }
+
+  _resetListener: Object;
   _scrollView: ?ScrollView;
-  _idleCallback: any;
+  _nextOffset = 0;
   _isIdle: boolean = true;
-  _isInitial: boolean = true;
 
-  _setInitialPage = () => {
-    if (this.props.layout.width) {
-      this._isInitial = true;
-      this._scrollTo(
-        this.props.navigationState.index * this.props.layout.width,
-        false
-      );
-    }
+  _scrollTo = (x: number, animated = this.props.animationEnabled !== false) => {
+    this._nextOffset = x;
 
-    setTimeout(() => {
-      this._isInitial = false;
-    }, 50);
-  };
-
-  _scrollTo = (x: number, animated = true) => {
     if (this._isIdle && this._scrollView) {
       this._scrollView.scrollTo({
         x,
-        animated: animated && this.props.animationEnabled !== false,
+        animated,
       });
     }
   };
 
   _handleMomentumScrollEnd = (e: ScrollEvent) => {
-    let nextIndex = Math.round(
+    const nextIndex = Math.round(
       e.nativeEvent.contentOffset.x / this.props.layout.width
     );
-
-    const nextRoute = this.props.navigationState.routes[nextIndex];
-
-    if (this.props.canJumpToTab(nextRoute)) {
-      this.props.jumpTo(nextRoute.key);
-      this.props.onAnimationEnd && this.props.onAnimationEnd();
-    } else {
-      global.requestAnimationFrame(() => {
-        this._scrollTo(
-          this.props.navigationState.index * this.props.layout.width
-        );
-      });
-    }
+    this._isIdle = true;
+    this.props.jumpToIndex(nextIndex);
   };
 
   _handleScroll = (e: ScrollEvent) => {
-    if (this._isInitial || e.nativeEvent.contentSize.width === 0) {
-      return;
-    }
-
-    const { navigationState, layout } = this.props;
-    const offset = navigationState.index * layout.width;
-
-    this.props.offsetX.setValue(-offset);
-    this.props.panX.setValue(offset - e.nativeEvent.contentOffset.x);
-
-    global.cancelAnimationFrame(this._idleCallback);
-
-    this._isIdle = false;
-    this._idleCallback = global.requestAnimationFrame(() => {
-      this._isIdle = true;
-    });
+    this._isIdle =
+      Math.abs(e.nativeEvent.contentOffset.x - this._nextOffset) < 0.1;
+    this.props.position.setValue(
+      e.nativeEvent.contentOffset.x / this.props.layout.width
+    );
   };
 
-  render() {
-    const {
-      children,
-      layout,
-      navigationState,
-      onSwipeStart,
-      onSwipeEnd,
-    } = this.props;
+  _setRef = (el: ?ScrollView) => (this._scrollView = el);
 
+  render() {
+    const { children, layout, navigationState } = this.props;
     return (
       <ScrollView
         horizontal
@@ -148,22 +120,19 @@ export default class TabViewPagerScroll<T: *> extends React.Component<
         directionalLockEnabled
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
-        overScrollMode="never"
         scrollEnabled={this.props.swipeEnabled}
         automaticallyAdjustContentInsets={false}
         bounces={false}
         alwaysBounceHorizontal={false}
         scrollsToTop={false}
         showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={1}
+        scrollEventThrottle={16}
         onScroll={this._handleScroll}
-        onScrollBeginDrag={onSwipeStart}
-        onScrollEndDrag={onSwipeEnd}
         onMomentumScrollEnd={this._handleMomentumScrollEnd}
         contentOffset={this.state.initialOffset}
         style={styles.container}
         contentContainerStyle={layout.width ? null : styles.container}
-        ref={el => (this._scrollView = el)}
+        ref={this._setRef}
       >
         {React.Children.map(children, (child, i) => (
           <View
@@ -185,8 +154,9 @@ export default class TabViewPagerScroll<T: *> extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
   },
+
   page: {
     flex: 1,
     overflow: 'hidden',
